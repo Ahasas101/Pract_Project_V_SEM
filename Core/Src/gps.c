@@ -9,7 +9,7 @@
 
 
 extern UART_HandleTypeDef huart6;
-uint8_t RecBuff[128];
+uint8_t RecBuff[50];
 uint8_t TransBuff[] = "$EIGPQ,RMC*3A\r\n";
 volatile uint8_t data;
 volatile uint8_t data_pos = 0;
@@ -21,7 +21,6 @@ volatile uint8_t Rel_Data[10];
  */
 static void GpsGetData(void);
 static char* GpsGetRelevant(uint8_t pos);
-
 
 
 static void GpsGetData(void)
@@ -63,6 +62,17 @@ static char* GpsGetRelevant(uint8_t pos)
     return field;
 }
 
+void GspInit(void)
+{
+	uint8_t baudcmd[] = "$PUBX,41,1,0007,0003,9600,0*10\r\n";
+	HAL_UART_Transmit(&huart6, baudcmd, strlen((char*)baudcmd), HAL_MAX_DELAY);
+	huart6.Init.BaudRate = 9600;
+  if (HAL_UART_Init(&huart6) != HAL_OK)
+  {
+	Error_Handler();
+  }
+
+}
 
 Gps_Status GpsGetStatus(void)
 {

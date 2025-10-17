@@ -27,7 +27,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+static void buttoninit(void);
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -93,9 +93,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART6_UART_Init();
   MX_USART2_UART_Init();
+  buttoninit();
   /* USER CODE BEGIN 2 */
-
- //  Gps_Status s = GpsGetStatus();
+//  GspInit();
+//  Gps_Status s = GpsGetStatus();
 //  HAL_Delay(1000);
 //  uint32_t t = GpsGetTime();
 //  HAL_Delay(1000);
@@ -103,9 +104,15 @@ int main(void)
 //  HAL_Delay(1000);
 //  uint32_t longi = GpsGetLongitute();
 
- GsmInit();
+ 	GsmInit();
   Gsm_Status_def k = GsmGetStatus();
-
+  Sim_Status_def y =GsmGetSimStatus();
+  char phno[] = "7017586549";
+  while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
+  Call_Status_def z = GsmCallNo(phno);
+	char data[] = "UID:HP72 4567\nSpeed:87km/hr\nLatitude:31.4685° N\nLongitute:76.2708° E\nPowered By SAVER";
+	GsmSendSMS(phno, data);
+//  GsmSendSMS("7017586549", "Hello from IIIT UNA!");
 
   /* USER CODE END 2 */
 
@@ -247,6 +254,18 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void buttoninit(void)
+{
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == USART6)

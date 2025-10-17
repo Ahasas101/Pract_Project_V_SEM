@@ -11,7 +11,10 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "main.h"
+
+#define TIMEOUT 		2000
 
 typedef enum{
 	GsmActive,
@@ -33,7 +36,7 @@ typedef enum{
 	NoDialTone,
 	CallBusy,
 	NoAnswer,
-	CallError
+	UnknownCmdError
 }Call_Status_def;
 
 typedef enum{
@@ -50,5 +53,6 @@ Sim_Status_def GsmGetSimStatus(void); // AT+CPIN?
 char* GsmGetSimICCID(void); // AT+CCID
 Call_Status_def GsmCallNo(char* no); //ATD7017586549;
 Call_Status_def GsmCallHangUp(void); //ATH
+void GsmSendSMS(const char* number, const char* message);
 
 #endif /* SRC_GSM_H_ */

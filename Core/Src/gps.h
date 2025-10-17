@@ -37,6 +37,8 @@ uint32_t GpsGetLatitude(void);
 uint32_t GpsGetLongitute(void);
 uint32_t GpsGetSpeed(void);
 uint32_t GpsGetDate(void);
+void GspInit(void);
 void GpsCallbackHandler(void);
+
 
 #endif /* SRC_GPS_H_ */
