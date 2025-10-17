@@ -40,10 +40,11 @@ int main(void)
   Sim_Status_def y =GsmGetSimStatus();
   char phno[] = "7017586549";
 	char data[] = "UID:HP72 4567\nSpeed:87km/hr\nLatitude:31.4685° N\nLongitute:76.2708° E\nPowered By SAVER";
-//  Call_Status_def z = GsmCallNo(phno);
+
   while(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == GPIO_PIN_SET);
 
-//  GsmSendSMS(phno, data);
+ GsmSendSMS(phno, data);
+ Call_Status_def z = GsmCallNo(phno);
 
 
   while (1)
@@ -175,4 +176,5 @@ void assert_failed(uint8_t *file, uint32_t line)
 
 }
 #endif
+
 
